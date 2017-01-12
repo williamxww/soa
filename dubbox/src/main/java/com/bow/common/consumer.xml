@@ -10,6 +10,6 @@
     <dubbo:consumer filter="elapsedTimeFilter" />
 
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
-    <dubbo:reference id="c1" interface="com.bow.service.Calculator" group="vv" version="1.2.3"/>
+    <dubbo:reference id="c1" interface="com.bow.service.EmsCalculator" init="true" cluster="ems" />
 
 </beans>

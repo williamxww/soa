@@ -2,6 +2,8 @@ package com.bow.common;
 
 import java.util.concurrent.TimeUnit;
 
+import com.alibaba.dubbo.rpc.RpcContext;
+import com.bow.service.EmsCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -20,8 +22,9 @@ public class Consumer {
 		System.setProperty("dubbo.application.logger", "slf4j");
         ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"com/bow/common/consumer.xml"});
         while(true){
-            Calculator calculator = context.getBean(Calculator.class);
-            System.out.println("result>>>"+calculator.calculate(1,1));
+            EmsCalculator calculator = context.getBean(EmsCalculator.class);
+            System.out.println("result>>>"+calculator.calculate("10000",1,1));
+            System.out.println("wu la la");
             try {
                 TimeUnit.SECONDS.sleep(5);
             } catch (InterruptedException e) {

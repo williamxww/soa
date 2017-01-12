@@ -1,1 +1,1 @@
-elapsedTimeFilter=com.bow.filter.ElapsedTimeFilter
+elapsedTimeFilter=com.bow.extension.ElapsedTimeFilter

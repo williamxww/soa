@@ -1,4 +1,4 @@
-package com.bow.filter;
+package com.bow.extension;
 
 import com.alibaba.dubbo.rpc.Filter;
 import com.alibaba.dubbo.rpc.Invocation;
