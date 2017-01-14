@@ -32,4 +32,8 @@
 
     <bean id="emsCalculatorImpl" class="com.bow.service.impl.EmsCalculatorImpl"></bean>
     <dubbo:service interface="com.bow.service.EmsCalculator" ref="emsCalculatorImpl" protocol="p1" />
+
+    <bean id="emsNeServiceImpl" class="com.bow.service.impl.EmsNeServiceImpl"></bean>
+    <dubbo:service interface="com.bow.service.EmsNeService" ref="emsNeServiceImpl" protocol="p1" />
+
 </beans>

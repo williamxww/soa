@@ -2,7 +2,9 @@ package com.bow.common;
 
 import java.util.concurrent.TimeUnit;
 
+import com.bow.entity.Data;
 import com.bow.service.EmsCalculator;
+import com.bow.service.EmsNeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -26,7 +28,11 @@ public class Consumer {
             System.out.println("calculator ems1>>>" + calculator1.calculate(10000, 1, 1));
             System.out.println("calculator ems2>>>" + calculator1.calculate(20000, 1, 1));
             System.out.println("calculator>>>" + calculator2.calculate(2, 2));
-            System.out.println("wu la la");
+
+            EmsNeService neService = context.getBean(EmsNeService.class);
+            Data data = neService.getNe(20000);
+            System.out.println("neService.getNe>>>" + data);
+
             try {
                 TimeUnit.SECONDS.sleep(5);
             } catch (InterruptedException e) {

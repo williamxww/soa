@@ -12,5 +12,6 @@
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
     <dubbo:reference id="c1" interface="com.bow.service.EmsCalculator" init="true" cluster="ems"/>
     <dubbo:reference id="c2" interface="com.bow.service.Calculator" />
+    <dubbo:reference id="emsNeService" interface="com.bow.service.EmsNeService" cluster="ems"/>
 
 </beans>

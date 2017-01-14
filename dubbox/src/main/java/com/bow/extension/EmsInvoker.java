@@ -5,7 +5,11 @@ import com.alibaba.dubbo.rpc.Invocation;
 import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.Result;
 import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.RpcResult;
 import com.alibaba.dubbo.rpc.cluster.Directory;
+import com.alibaba.dubbo.rpc.cluster.support.FailsafeClusterInvoker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -14,11 +18,11 @@ import java.util.List;
  * @since 2017/1/12.
  */
 public class EmsInvoker<T> implements Invoker<T> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FailsafeClusterInvoker.class);
 
     private Directory<T> directory;
 
     public EmsInvoker(Directory<T> directory) {
-        System.out.println("init....");
         this.directory = directory;
     }
 
@@ -41,27 +45,35 @@ public class EmsInvoker<T> implements Invoker<T> {
      */
     @Override
     public Result invoke(Invocation invocation) throws RpcException {
-        Object arg0 = invocation.getArguments()[0];
-        if (arg0 == null || !(arg0 instanceof Integer)) {
-            throw new IllegalStateException("first argument in ems interface must be emsId(Integer), not "+arg0);
-        }
-        int emsId = (int) arg0;
-        List<Invoker<T>> invokers = directory.list(invocation);
-
-        Invoker selectedInvoker = null;
-        for (Invoker invoker : invokers) {
-            String providerModuleStr = invoker.getUrl().getParameter("module");
-            Integer providerModule = Integer.parseInt(providerModuleStr);
-            if (emsId == providerModule) {
-                selectedInvoker = invoker;
-                break;
+        try {
+            Object arg0 = invocation.getArguments()[0];
+            if (arg0 == null || !(arg0 instanceof Integer)) {
+                throw new IllegalStateException("first argument in ems interface must be emsId(Integer), not " + arg0);
             }
+            int emsId = (int) arg0;
+            List<Invoker<T>> invokers = directory.list(invocation);
+
+            Invoker selectedInvoker = null;
+            for (Invoker invoker : invokers) {
+                String providerModuleStr = invoker.getUrl().getParameter("module");
+                Integer providerModule = Integer.parseInt(providerModuleStr);
+                if (emsId == providerModule) {
+                    selectedInvoker = invoker;
+                    break;
+                }
+            }
+
+            if (selectedInvoker == null) {
+                throw new IllegalStateException("no ems provider, emsId " + emsId);
+            }
+            return selectedInvoker.invoke(invocation);
+
+        } catch (Throwable e) {
+            //调ems出错直接忽略，只记录异常
+            LOGGER.error("call ems exception: " + e.getMessage(), e);
+            return new RpcResult();
         }
 
-        if (selectedInvoker == null) {
-            throw new IllegalStateException("no provider for ems, id " + emsId);
-        }
-        return selectedInvoker.invoke(invocation);
     }
 
     /**
