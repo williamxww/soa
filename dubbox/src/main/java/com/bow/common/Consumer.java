@@ -2,7 +2,6 @@ package com.bow.common;
 
 import java.util.concurrent.TimeUnit;
 
-import com.alibaba.dubbo.rpc.RpcContext;
 import com.bow.service.EmsCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +23,9 @@ public class Consumer {
         while (true) {
             EmsCalculator calculator1 = context.getBean(EmsCalculator.class);
             Calculator calculator2 = context.getBean(Calculator.class);
-            System.out.println("calculator1>>>" + calculator1.calculate(10000, 1, 1));
-            System.out.println("calculator2>>>" + calculator2.calculate(2, 2));
+            System.out.println("calculator ems1>>>" + calculator1.calculate(10000, 1, 1));
+            System.out.println("calculator ems2>>>" + calculator1.calculate(20000, 1, 1));
+            System.out.println("calculator>>>" + calculator2.calculate(2, 2));
             System.out.println("wu la la");
             try {
                 TimeUnit.SECONDS.sleep(5);

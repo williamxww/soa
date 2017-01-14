@@ -21,15 +21,12 @@
 	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <dubbo:application name="ems" />
-    <dubbo:module name="10000" id = "ems1"/>
+    <dubbo:module name="20000" id = "ems2"/>
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
     <dubbo:protocol id="p1" name="dubbo" port="20880" />
     <dubbo:protocol id="p2" name="dubbo" port="20881" />
 
 
-    <bean id="calculatorImpl" class="com.bow.service.impl.CalculatorImpl"></bean>
-    <dubbo:service interface="com.bow.service.Calculator" ref="calculatorImpl" protocol="p1" />
-
     <bean id="emsCalculatorImpl" class="com.bow.service.impl.EmsCalculatorImpl"></bean>
-    <dubbo:service interface="com.bow.service.EmsCalculator" ref="emsCalculatorImpl" protocol="p1" />
+    <dubbo:service interface="com.bow.service.EmsCalculator" ref="emsCalculatorImpl" protocol="p2"  />
 </beans>
