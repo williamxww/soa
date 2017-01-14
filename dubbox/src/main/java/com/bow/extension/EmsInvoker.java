@@ -41,13 +41,18 @@ public class EmsInvoker<T> implements Invoker<T> {
      */
     @Override
     public Result invoke(Invocation invocation) throws RpcException {
-        String emsId = (String) invocation.getArguments()[0];
+        Object arg0 = invocation.getArguments()[0];
+        if (arg0 == null || !(arg0 instanceof Integer)) {
+            throw new IllegalStateException("first argument in ems interface must be emsId(Integer), not "+arg0);
+        }
+        int emsId = (int) arg0;
         List<Invoker<T>> invokers = directory.list(invocation);
 
         Invoker selectedInvoker = null;
         for (Invoker invoker : invokers) {
-            String providerModule = invoker.getUrl().getParameter("module");
-            if (emsId.equals(providerModule)) {
+            String providerModuleStr = invoker.getUrl().getParameter("module");
+            Integer providerModule = Integer.parseInt(providerModuleStr);
+            if (emsId == providerModule) {
                 selectedInvoker = invoker;
                 break;
             }

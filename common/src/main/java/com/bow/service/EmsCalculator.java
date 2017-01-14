@@ -6,5 +6,5 @@ package com.bow.service;
  */
 public interface EmsCalculator {
 
-    int calculate(String emsId, int a, int b);
+    int calculate(Integer emsId, int a, int b);
 }

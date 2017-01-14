@@ -16,14 +16,16 @@ import com.bow.service.Calculator;
  * @since 2016/12/12.
  */
 public class Consumer {
-	private static final Logger LOGGER = LoggerFactory.getLogger(Consumer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Consumer.class);
 
     public static void main(String[] args) {
-		System.setProperty("dubbo.application.logger", "slf4j");
-        ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"com/bow/common/consumer.xml"});
-        while(true){
-            EmsCalculator calculator = context.getBean(EmsCalculator.class);
-            System.out.println("result>>>"+calculator.calculate("10000",1,1));
+        System.setProperty("dubbo.application.logger", "slf4j");
+        ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "com/bow/common/consumer.xml" });
+        while (true) {
+            EmsCalculator calculator1 = context.getBean(EmsCalculator.class);
+            Calculator calculator2 = context.getBean(Calculator.class);
+            System.out.println("calculator1>>>" + calculator1.calculate(10000, 1, 1));
+            System.out.println("calculator2>>>" + calculator2.calculate(2, 2));
             System.out.println("wu la la");
             try {
                 TimeUnit.SECONDS.sleep(5);
@@ -31,7 +33,6 @@ public class Consumer {
                 e.printStackTrace();
             }
         }
-
 
     }
 }

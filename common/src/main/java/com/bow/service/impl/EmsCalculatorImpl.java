@@ -8,7 +8,7 @@ import com.bow.service.EmsCalculator;
  */
 public class EmsCalculatorImpl implements EmsCalculator {
     @Override
-    public int calculate(String emsId, int a, int b) {
+    public int calculate(Integer emsId, int a, int b) {
         return (a + b) * 2;
     }
 }
