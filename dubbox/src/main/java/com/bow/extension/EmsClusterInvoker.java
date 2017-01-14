@@ -7,7 +7,6 @@ import com.alibaba.dubbo.rpc.Result;
 import com.alibaba.dubbo.rpc.RpcException;
 import com.alibaba.dubbo.rpc.RpcResult;
 import com.alibaba.dubbo.rpc.cluster.Directory;
-import com.alibaba.dubbo.rpc.cluster.support.FailsafeClusterInvoker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,12 +16,12 @@ import java.util.List;
  * @author vv
  * @since 2017/1/12.
  */
-public class EmsInvoker<T> implements Invoker<T> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FailsafeClusterInvoker.class);
+public class EmsClusterInvoker<T> implements Invoker<T> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmsClusterInvoker.class);
 
     private Directory<T> directory;
 
-    public EmsInvoker(Directory<T> directory) {
+    public EmsClusterInvoker(Directory<T> directory) {
         this.directory = directory;
     }
 

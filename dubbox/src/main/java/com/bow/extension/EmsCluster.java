@@ -22,6 +22,6 @@ public class EmsCluster implements Cluster {
      */
     @Override
     public <T> Invoker<T> join(Directory<T> directory) throws RpcException {
-        return new EmsInvoker<T>(directory);
+        return new EmsClusterInvoker<T>(directory);
     }
 }
