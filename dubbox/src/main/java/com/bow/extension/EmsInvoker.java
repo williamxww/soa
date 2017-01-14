@@ -1,14 +1,11 @@
 package com.bow.extension;
 
 import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.registry.integration.RegistryDirectory;
 import com.alibaba.dubbo.rpc.Invocation;
 import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.Result;
-import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.RpcException;
 import com.alibaba.dubbo.rpc.cluster.Directory;
-import com.alibaba.fastjson.JSON;
 
 import java.util.List;
 
@@ -18,11 +15,11 @@ import java.util.List;
  */
 public class EmsInvoker<T> implements Invoker<T> {
 
-    private RegistryDirectory<T> directory;
+    private Directory<T> directory;
 
     public EmsInvoker(Directory<T> directory) {
         System.out.println("init....");
-        this.directory = (RegistryDirectory<T>)directory;
+        this.directory = directory;
     }
 
     /**
@@ -45,16 +42,21 @@ public class EmsInvoker<T> implements Invoker<T> {
     @Override
     public Result invoke(Invocation invocation) throws RpcException {
         String emsId = (String) invocation.getArguments()[0];
-        System.out.println("client "+emsId);
         List<Invoker<T>> invokers = directory.list(invocation);
-        for(Invoker invoker : invokers){
-            URL url = invoker.getUrl();
-            String server = url.getParameter("name");
-            System.out.println("server "+server);
+
+        Invoker selectedInvoker = null;
+        for (Invoker invoker : invokers) {
+            String providerModule = invoker.getUrl().getParameter("module");
+            if (emsId.equals(providerModule)) {
+                selectedInvoker = invoker;
+                break;
+            }
         }
 
-        Invoker<T> invoker = invokers.get(0);
-        return invoker.invoke(invocation);
+        if (selectedInvoker == null) {
+            throw new IllegalStateException("no provider for ems, id " + emsId);
+        }
+        return selectedInvoker.invoke(invocation);
     }
 
     /**

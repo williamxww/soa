@@ -2,12 +2,13 @@ package com.bow.adaptive;
 
 import com.alibaba.dubbo.common.extension.ExtensionLoader;
 import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.cluster.Cluster;
 
 /**
  * @author vv
  * @since 2017/1/12.
  */
-public class Cluster$Adpative implements com.alibaba.dubbo.rpc.cluster.Cluster {
+public class Cluster$Adpative implements Cluster {
     public com.alibaba.dubbo.rpc.Invoker join(com.alibaba.dubbo.rpc.cluster.Directory arg0) throws RpcException {
         if (arg0 == null)
             throw new IllegalArgumentException("com.alibaba.dubbo.rpc.cluster.Directory argument == null");

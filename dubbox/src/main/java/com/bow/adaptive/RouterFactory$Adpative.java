@@ -1,23 +1,22 @@
 package com.bow.adaptive;
 
 import com.alibaba.dubbo.common.extension.ExtensionLoader;
+import com.alibaba.dubbo.rpc.cluster.RouterFactory;
 
 /**
  * @author vv
  * @since 2017/1/13.
  */
-public class RouterFactory$Adpative implements com.alibaba.dubbo.rpc.cluster.RouterFactory {
-    public com.alibaba.dubbo.rpc.cluster.Router getRouter(com.alibaba.dubbo.common.URL arg0) {
-        if (arg0 == null)
+public class RouterFactory$Adpative implements RouterFactory {
+    public com.alibaba.dubbo.rpc.cluster.Router getRouter(com.alibaba.dubbo.common.URL url) {
+        if (url == null)
             throw new IllegalArgumentException("url == null");
-        com.alibaba.dubbo.common.URL url = arg0;
         String extName = url.getProtocol();
         if (extName == null)
             throw new IllegalStateException(
                     "Fail to get extension(com.alibaba.dubbo.rpc.cluster.RouterFactory) name from url(" + url.toString()
                             + ") use keys([protocol])");
-        com.alibaba.dubbo.rpc.cluster.RouterFactory extension = (com.alibaba.dubbo.rpc.cluster.RouterFactory) ExtensionLoader
-                .getExtensionLoader(com.alibaba.dubbo.rpc.cluster.RouterFactory.class).getExtension(extName);
-        return extension.getRouter(arg0);
+        RouterFactory extension = ExtensionLoader.getExtensionLoader(RouterFactory.class).getExtension(extName);
+        return extension.getRouter(url);
     }
 }

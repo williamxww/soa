@@ -21,7 +21,7 @@ public class ElapsedTimeFilter implements Filter {
         Result result = invoker.invoke(invocation);
         long elapsed = System.currentTimeMillis() - start;
         if (invoker.getUrl() != null) {
-            log.info("[{}], [{}], [{}]", invoker.getInterface(), invocation.getMethodName(), elapsed);
+            log.info("{}.{} elapse {} ms", invoker.getInterface(), invocation.getMethodName(), elapsed);
         }
         return result;
     }
