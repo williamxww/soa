@@ -3,6 +3,7 @@ package com.bow.common;
 import java.util.concurrent.TimeUnit;
 
 import com.bow.entity.Data;
+import com.bow.extension.EmsState;
 import com.bow.service.EmsCalculator;
 import com.bow.service.EmsNeService;
 import org.slf4j.Logger;
@@ -22,16 +23,19 @@ public class Consumer {
     public static void main(String[] args) {
         System.setProperty("dubbo.application.logger", "slf4j");
         ApplicationContext context = new ClassPathXmlApplicationContext(new String[] { "com/bow/common/consumer.xml" });
+        EmsState state = context.getBean(EmsState.class);
+        state.subscribe();
         while (true) {
             EmsCalculator calculator1 = context.getBean(EmsCalculator.class);
             Calculator calculator2 = context.getBean(Calculator.class);
             System.out.println("calculator ems1>>>" + calculator1.calculate(10000, 1, 1));
-            System.out.println("calculator ems2>>>" + calculator1.calculate(20000, 1, 1));
-            System.out.println("calculator>>>" + calculator2.calculate(2, 2));
+//            System.out.println("calculator ems2>>>" + calculator1.calculate(20000, 1, 1));
+//            System.out.println("calculator>>>" + calculator2.calculate(2, 2));
+//
+//            EmsNeService neService = context.getBean(EmsNeService.class);
+//            Data data = neService.getNe(20000);
+//            System.out.println("neService.getNe>>>" + data);
 
-            EmsNeService neService = context.getBean(EmsNeService.class);
-            Data data = neService.getNe(20000);
-            System.out.println("neService.getNe>>>" + data);
 
             try {
                 TimeUnit.SECONDS.sleep(5);

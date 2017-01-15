@@ -2,14 +2,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
     <dubbo:application name="consumer" owner="william"/>
     <dubbo:consumer filter="elapsedTimeFilter"/>
-
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+
+    <context:annotation-config />
+    <dubbo:reference id="registryService" interface="com.alibaba.dubbo.registry.RegistryService" check="false" />
+    <bean id="emsState" class="com.bow.extension.EmsState" />
+
     <dubbo:reference id="c1" interface="com.bow.service.EmsCalculator" init="true" cluster="ems"/>
     <dubbo:reference id="c2" interface="com.bow.service.Calculator" />
     <dubbo:reference id="emsNeService" interface="com.bow.service.EmsNeService" cluster="ems"/>
